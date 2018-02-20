@@ -33,7 +33,8 @@ $prodotto = "CREATE TABLE prodotto("
     . "prezzo DOUBLE,"
     . "disp INT NOT NULL DEFAULT '0',"
     . "id_cat_prodotto INT,"
-    . "FOREIGN KEY (id_cat_prodotto) REFERENCES cat_prodotto(id_cat_prodotto)"
+    . "FOREIGN KEY (id_cat_prodotto) REFERENCES cat_prodotto(id_cat_prodotto),"
+    . "flag_ing INT NOT NULL DEFAULT '0'"
     . ")";
 
 $ingredienti = "CREATE TABLE ingredienti ("

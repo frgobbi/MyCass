@@ -19,7 +19,7 @@ try{
     }
     if($trovato == 0){
         $nome = ucfirst($nome);
-        $connessione->exec("INSERT INTO cat_prodotto (id_ing,nome_cat,colore) VALUE (NULL,'$nome','')");
+        $connessione->exec("INSERT INTO cat_prodotto (id_cat_prodotto,nome_cat,colore) VALUE (NULL,'$nome','$colore')");
     }
 }catch (PDOException $e){
     echo $e->getMessage();
