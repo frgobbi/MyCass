@@ -39,135 +39,9 @@ if (!$_SESSION['login']) {
         <section class="content">
             <!-- Small boxes (Stat box) -->
             <?php
+            include "../Componenti_base/BHome.php";
             if ($_SESSION['cat'] == 1) {
-                ?>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <div class="box box-warning">
-                            <div class="box-header" data-toggle="tooltip" title="Header tooltip">
-                                <h3 class="box-title">Prodotti & co.</h3>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-warning btn-xs" data-widget="collapse"><i
-                                                class="fa fa-minus"></i></button>
-                                    <button class="btn btn-warning btn-xs" data-widget="remove"><i
-                                                class="fa fa-times"></i></button>
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class='row'>
-                                    <div class='col-xs-4'>
-                                        <button class='btn btn-primary btn-lg btn-block'
-                                                onclick="$('#modal-prodotti').modal('show')">Prodotti
-                                        </button>
-                                    </div>
-                                    <div class='col-xs-4'>
-                                        <button class='btn btn-warning btn-lg btn-block'
-                                                onclick="$('#modal-cat').modal('show')">Categorie
-                                        </button>
-                                    </div>
-                                    <div class='col-xs-4'>
-                                        <button class='btn btn-danger btn-lg btn-block'
-                                                onclick="$('#modal-ing').modal('show')">Ingredienti
-                                        </button>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class='row'>
-                                    <div class='col-sm-12'>
-                                        <div class='table-responsive'>
-                                            <table class='table table-bordered table-hovered'>
-                                                <thead>
-                                                <tr>
-                                                    <th>Nome Prodotto</th>
-                                                    <th>Prezzo</th>
-                                                    <th>Categoria</th>
-                                                </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- /.box-body -->
-
-                        </div><!-- /.box -->
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-sm-12">
-                        <div class="box box-primary">
-                            <div class="box-header" data-toggle="tooltip" title="Header tooltip">
-                                <h3 class="box-title">Giornate</h3>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-primary btn-xs" data-widget="collapse"><i
-                                                class="fa fa-minus"></i></button>
-                                    <button class="btn btn-primary btn-xs" data-widget="remove"><i
-                                                class="fa fa-times"></i></button>
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class='row'>
-                                    <div class='col-sm-12'>
-                                        <button class='btn btn-primary btn-block'>Nuovo giorno</button>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class='row'>
-                                    <div class='col-sm-12'>
-                                        <div class='table-responsive'>
-                                            <table class='table table-bordered table-hovered'>
-                                                <thead>
-                                                <tr>
-                                                    <th>Data</th>
-                                                    <th>Incasso</th>
-                                                    <th>Chiusura</th>
-                                                </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- /.box-body -->
-
-                        </div><!-- /.box -->
-
-                        <div class="box box-success">
-                            <div class="box-header" data-toggle="tooltip" title="Header tooltip">
-                                <h3 class="box-title">Utenti</h3>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-success btn-xs" data-widget="collapse"><i
-                                                class="fa fa-minus"></i></button>
-                                    <button class="btn btn-success btn-xs" data-widget="remove"><i
-                                                class="fa fa-times"></i></button>
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class='row'>
-                                    <div class='col-sm-12'>
-                                        <button class='btn btn-success btn-block'>Nuovo Utente</button>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class='row'>
-                                    <div class='col-sm-12'>
-                                        <div class='table-responsive'>
-                                            <table class='table table-bordered table-hovered'>
-                                                <thead>
-                                                <tr>
-                                                    <th>Nome</th>
-                                                    <th>Cognome</th>
-                                                    <th>Categoria</th>
-                                                    <th>Modifica</th>
-                                                </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div><!-- /.box-body -->
-
-                        </div><!-- /.box -->
-                    </div>
-                </div>
-                <?php
+                BodyAdmin();
             }
             ?>
 
@@ -339,7 +213,7 @@ if (!$_SESSION['login']) {
                                         echo "<div class=col-sm-4>";
                                         echo "<div class=\"form-check\" style='display: inline'>"
                                             . "<label class=\"form-check-label\">"
-                                            . "<input type=\"checkbox\" name='ingredient[]' class=\"form-check-input\" value=\"$id_ing\"> $nome_ing"
+                                            . "<input type=\"checkbox\" name='ingredienti[]' class=\"form-check-input\" value=\"$id_ing\"> $nome_ing"
                                             . "</label>"
                                             . "</div>";
                                         echo "</div>";
