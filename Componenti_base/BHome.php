@@ -42,7 +42,7 @@ function BodyAdmin()
                     <div class="row">
                         <div class="col-sm-12">
                             <button class='btn btn-primary btn-sm btn-block'
-                                    onclick="$('#modal-mod-cat').modal('show')">Modifica categorie
+                                    onclick="popupModificacat()">Modifica categorie
                             </button>
                         </div>
                     </div>
@@ -64,15 +64,16 @@ function BodyAdmin()
                                     $connessione = null;
                                     include "../connessione.php";
                                     try {
-                                        foreach ($connessione->query("SELECT prodotto.nome_p,prodotto.prezzo,cat_prodotto.nome_cat FROM prodotto INNER JOIN cat_prodotto ON prodotto.id_cat_prodotto = cat_prodotto.id_cat_prodotto ORDER BY(cat_prodotto.id_cat_prodotto)") as $row) {
+                                        foreach ($connessione->query("SELECT prodotto.id_prodotto, prodotto.nome_p,prodotto.prezzo,cat_prodotto.nome_cat FROM prodotto INNER JOIN cat_prodotto ON prodotto.id_cat_prodotto = cat_prodotto.id_cat_prodotto ORDER BY(cat_prodotto.id_cat_prodotto)") as $row) {
                                             $n_p = $row['nome_p'];
                                             $pre = $row['prezzo'];
                                             $nome_c = $row['nome_cat'];
+                                            $id_prod= $row['id_prodotto'];
                                             echo "<tr>"
                                                 . "<td>$n_p</td>"
                                                 . "<td>$pre &euro;</td>"
                                                 . "<td>$nome_c</td>"
-                                                . "<td><button class='btn btn-primary btn-block'><i class='fa fa-pencil'></i></button></td>"
+                                                . "<td><button class='btn btn-primary btn-block' onclick=\"popProd($id_prod)\"><i class='fas fa-pencil-alt'></i></button></td>"
                                             . "</tr>";
                                             }
                                     } catch (PDOException $e) {
@@ -119,6 +120,22 @@ function BodyAdmin()
                                         <th>Chiusura</th>
                                     </tr>
                                     </thead>
+                                    <tbody id="bodyTG">
+                                    <?php
+                                    include "../connessione.php";
+                                    foreach ($connessione->query("SELECT DATE_FORMAT(data_g, '%d-%m-%Y') AS data_giorno, incasso, chiuso FROM giorno") as $row){
+                                        $incasso = $row['incasso'];
+                                        $data = $row['data_giorno'];
+                                        $flag = $row['chiuso'];
+                                        echo "<tr>";
+                                            echo "<td>$data</td>";
+                                            echo "<td>$incasso &euro;</td>";
+                                            echo "<td><button class='btn btn-danger btn-block'><i class=\"fas fa-window-close\"></i></button></td>";
+                                        echo "</tr>";
+                                        $connessione = null;
+                                    }
+                                    ?>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -172,7 +189,7 @@ function BodyAdmin()
                                                 . "<td>$n_u</td>"
                                                 . "<td>$c_u</td>"
                                                 . "<td>$cat</td>"
-                                                . "<td><button class='btn btn-primary btn-block'><i class='fa fa-pencil'></i></button></td>"
+                                                . "<td><button class='btn btn-primary btn-block'><i class='fas fa-pencil-alt'></i></button></td>"
                                                 . "</tr>";
                                         }
                                     } catch (PDOException $e) {

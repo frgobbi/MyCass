@@ -8,9 +8,9 @@
 function librerieIndex(){
     ?>
     <meta charset="UTF-8">
-    <title>SOS snack</title>
+    <title>MyCass</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link rel="shortcut icon" type="image/x-icon" href="Immagini/Loghi/logo.ico">
+    <!--<link rel="shortcut icon" type="image/x-icon" href="Immagini/Loghi/logo.ico">-->
     <!-- Bootstrap 3.3.2 -->
     <link href="Librerie/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- FontAwesome 4.3.0 -->
@@ -34,7 +34,7 @@ function librerieIndex(){
     <link href="Librerie/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <link href="Librerie/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="Librerie/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Librerie/fontawesome-free-5.0.7/web-fonts-with-css/css/fontawesome-all.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -85,9 +85,9 @@ function librerieIndex(){
 function libreriePublic(){
     ?>
     <meta charset="UTF-8">
-    <title>SOS snack</title>
+    <title>MyCass</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link rel="shortcut icon" type="image/x-icon" href="../Immagini/Loghi/logo.ico">
+    <!--<link rel="shortcut icon" type="image/x-icon" href="Immagini/Loghi/logo.ico">-->
     <!-- Bootstrap 3.3.2 -->
     <link href="../Librerie/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- FontAwesome 4.3.0 -->
@@ -111,7 +111,7 @@ function libreriePublic(){
     <link href="../Librerie/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
     <!-- bootstrap wysihtml5 - text editor -->
     <link href="../Librerie/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="../Librerie/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../Librerie/fontawesome-free-5.0.7/web-fonts-with-css/css/fontawesome-all.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
