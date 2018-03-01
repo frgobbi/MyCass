@@ -49,7 +49,7 @@ function BodyAdmin()
                     <br>
                     <div class='row'>
                         <div class='col-sm-12'>
-                            <div class='table-responsive' style="height: 500px; overflow-y: auto">
+                            <div class='table-responsive' style="height: 527px; overflow-y: auto">
                                 <table class='table table-bordered table-hovered'>
                                     <thead>
                                     <tr>
@@ -105,7 +105,16 @@ function BodyAdmin()
                 <div class="box-body">
                     <div class='row'>
                         <div class='col-sm-12'>
-                            <button class='btn btn-primary btn-block'>Nuovo giorno</button>
+                            <button class='btn btn-primary btn-block' onclick="addGiornata()">Nuovo giorno</button>
+                            <br>
+                            <div id="ErrorA" style="display: none;" class="callout callout-danger">
+                                <h4>Errore</h4>
+                                <p>Questo giorno è gi&agrave; presente.</p>
+                            </div>
+                            <div id="WarnigA" style="display: none;" class="callout callout-warning">
+                                <h4>Attenzione</h4>
+                                <p>Prima di avviare un giorno, chiudere le giornate precedenti.</p>
+                            </div>
                         </div>
                     </div>
                     <br>
@@ -130,7 +139,12 @@ function BodyAdmin()
                                         echo "<tr>";
                                             echo "<td>$data</td>";
                                             echo "<td>$incasso &euro;</td>";
-                                            echo "<td><button class='btn btn-danger btn-block'><i class=\"fas fa-window-close\"></i></button></td>";
+                                            if($flag==0){
+                                                echo "<td><button class='btn btn-danger btn-block'><i class=\"fas fa-window-close\"></i></button></td>";
+                                            } else {
+                                                echo "<td><button disabled class='btn btn-danger btn-block disabled'><i class=\"fas fa-window-close\"></i></button></td>";
+                                            }
+
                                         echo "</tr>";
                                         $connessione = null;
                                     }
