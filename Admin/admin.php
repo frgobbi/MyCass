@@ -15,6 +15,7 @@ if (!$_SESSION['login']) {
 <head>
     <script type="text/javascript" src="../Admin/Javascript/Prodotti.js"></script>
     <script type="text/javascript" src="../Admin/Javascript/Giornate.js"></script>
+    <script type="text/javascript" src="../Admin/Javascript/Gestione_utenti.js"></script>
     <?php
     include "../Componenti_Base/Header.php";
     libreriePublic();
@@ -23,10 +24,10 @@ if (!$_SESSION['login']) {
         function controllaS(id) {
             var key;
             var keyQ;
-            if(id==1){
+            if (id == 1) {
                 key = "#ingM";
                 keyQ = "#ingQM";
-            }else {
+            } else {
                 key = "#ing";
                 keyQ = "#ingQ";
             }
@@ -36,13 +37,20 @@ if (!$_SESSION['login']) {
                 $(key).hide();
             }
         }
-        function popupModificacat(){
+
+        function popupModificacat() {
             crea_tabella();
             $('#modal-mod-cat').modal('show');
         }
+
         function popProd(id_prod) {
             bodyModProd(id_prod);
             $('#modal-mod-prod').modal('show');
+        }
+
+        function popUtente(id_u) {
+            popModUtente(id_u);
+            $('#modal-mod_utente').modal('show');
         }
     </script>
 </head>
@@ -59,7 +67,7 @@ if (!$_SESSION['login']) {
             <!-- Small boxes (Stat box) -->
             <?php
             include "../Componenti_base/BHome.php";
-                BodyAdmin();
+            BodyAdmin();
             ?>
 
         </section><!-- /.content -->
@@ -122,8 +130,8 @@ if (!$_SESSION['login']) {
             <div class="modal-body">
                 <form method="post" action="metodi/addCat.php">
                     <div class="form-group">
-                        <label for="nome">Nome categoria:</label>
-                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Bibite" required>
+                        <label for="nome_c">Nome categoria:</label>
+                        <input type="text" class="form-control" name="nome_c" id="nome_c" placeholder="Bibite" required>
                     </div>
 
                     <div class="form-group">
@@ -172,8 +180,9 @@ if (!$_SESSION['login']) {
             <div class="modal-body">
                 <form method="post" action="metodi/addProd.php">
                     <div class="form-group">
-                        <label for="nome">Nome prodotto:</label>
-                        <input type="text" class="form-control" name="nome" id="nome" placeholder="Hamburger" required>
+                        <label for="nome_p">Nome prodotto:</label>
+                        <input type="text" class="form-control" name="nome_p" id="nome_p" placeholder="Hamburger"
+                               required>
                     </div>
 
                     <div class="form-group">
@@ -300,6 +309,111 @@ if (!$_SESSION['login']) {
 
             </div>
 
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal new Utente-->
+<div class="modal fade" id="modal-new_utente">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Aggiungi nuovo utente</h4>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="formU">
+                    <div class="form-group">
+                        <label for="userU">Username Utente:</label>
+                        <input type="text" class="form-control" name="userU" id="userU" placeholder="Username" required>
+                    </div>
+                    <div id="EAUtente" style="display: none;" class="callout callout-danger">
+                        <h4>Errore</h4>
+                        <p>Username non valido</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nomeU">Nome Utente:</label>
+                        <input type="text" class="form-control" name="nomeU" id="nomeU" placeholder="Nome" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cognomeU">Cognome Utente:</label>
+                        <input type="text" class="form-control" name="cognomeU" id="cognomeU" placeholder="Cognome"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_catU">Categoria utente:</label>
+                        <select class="form-control" name="id_catU" id="id_catU">
+                            <?php
+                            include "../connessione.php";
+                            try {
+                                foreach ($connessione->query("SELECT * FROM cat_utente WHERE id_cat != 1") as $row) {
+                                    $id_categoria = $row['id_cat'];
+                                    $nome_categoria = $row['nome_cat'];
+                                    echo "<option value=\"$id_categoria\">$nome_categoria</option>";
+                                }
+                            } catch (PDOException $e) {
+                                echo $e->getMessage();
+                            }
+                            $connessione = null;
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd1">Password:</label>
+                        <input type="password" class="form-control" name="pwd1" id="pwd1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd2">Conferma password:</label>
+                        <input type="password" class="form-control" name="pwd2" id="pwd2" required>
+                    </div>
+
+                    <div id="WAUtente" style="display: none;" class="callout callout-warning">
+                        <h4>Attenzione</h4>
+                        <p>Le password non corrsipondono</p>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" onclick="creaUtente()" class="btn btn-primary btn-block">Inserisci
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal modifica Utente-->
+<div class="modal fade" id="modal-mod_utente">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Aggiungi nuovo utente</h4>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="bodyModUtente">
+
+            </div>
             <!-- Modal footer -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

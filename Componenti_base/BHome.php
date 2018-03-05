@@ -171,7 +171,7 @@ function BodyAdmin()
                 <div class="box-body">
                     <div class='row'>
                         <div class='col-sm-12'>
-                            <button class='btn btn-success btn-block'>Nuovo Utente</button>
+                            <button class='btn btn-success btn-block' onclick="$('#modal-new_utente').modal('show')">Nuovo Utente</button>
                         </div>
                     </div>
                     <br>
@@ -188,7 +188,7 @@ function BodyAdmin()
                                         <th>Modifica</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="bodyTUtente">
                                     <?php
                                     $connessione = null;
                                     include "../connessione.php";
@@ -203,7 +203,7 @@ function BodyAdmin()
                                                 . "<td>$n_u</td>"
                                                 . "<td>$c_u</td>"
                                                 . "<td>$cat</td>"
-                                                . "<td><button class='btn btn-primary btn-block'><i class='fas fa-pencil-alt'></i></button></td>"
+                                                . "<td><button onclick='popUtente(\"$u_u\")' class='btn btn-primary btn-block'><i class='fas fa-pencil-alt'></i></button></td>"
                                                 . "</tr>";
                                         }
                                     } catch (PDOException $e) {

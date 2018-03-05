@@ -5,7 +5,7 @@
  * Date: 20/02/2018
  * Time: 23:40
  */
-$nome = filter_input(INPUT_POST,"nome",FILTER_SANITIZE_STRING);
+$nome = filter_input(INPUT_POST,"nome_p",FILTER_SANITIZE_STRING);
 $prezzo =filter_input(INPUT_POST,"prezzo",FILTER_SANITIZE_STRING);
 $categoria =filter_input(INPUT_POST,"categoria",FILTER_SANITIZE_STRING);
 $disp = filter_input(INPUT_POST,"disp",FILTER_SANITIZE_STRING);

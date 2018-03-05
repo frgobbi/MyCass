@@ -5,7 +5,7 @@
  * Date: 20/02/2018
  * Time: 00:35
  */
-$nome = filter_input(INPUT_POST,"nome",FILTER_SANITIZE_STRING);
+$nome = filter_input(INPUT_POST,"nome_c",FILTER_SANITIZE_STRING);
 $colore =filter_input(INPUT_POST,"colore",FILTER_SANITIZE_STRING);
 include "../../connessione.php";
 try{
