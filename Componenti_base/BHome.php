@@ -250,21 +250,17 @@ function BodyCassa()
                         foreach ($connessione->query("SELECT * FROM `prodotto` INNER JOIN cat_prodotto ON cat_prodotto.id_cat_prodotto = prodotto.id_cat_prodotto WHERE disp = 1 ORDER BY(prodotto.id_cat_prodotto) ASC") as $row) {
                             $nome = $row['nome_p'];
                             $colore = $row['colore'];
+                            $prezzo =$row['prezzo'];
                             echo "<div class=\"col-lg-3 col-md-6\">"
-                                . "<a href=\"#\">"
-                                . "<!-- small box -->"
-                                . "<div class=\"small-box $colore\">"
-                                . "<div class=\"inner\">"
-                                . "<h4 style='color: white'>$nome</h4>"
-                                . "</div>"
-                                . "<div class='icon'>"
-                                . "<i class=\"fas fa-utensils\"></i>"
-                                . "</div>"
-                                . "<a href=\"#\" class=\"small-box-footer\"><br>"
-                                . "</a>"
-                                . "</div>"
-
-                                . "</a>"
+                                    . "<a href=\"#\">"
+                                        . "<!-- small box -->"
+                                        . "<div class=\"small-box $colore\">"
+                                            . "<h4 style='font-size:24px; padding-top:15px; color: white; font-family: KaushanScript' class='text-center'>$nome</h4>"
+                                        . "<a href=\"#\" style='font-family: KaushanScript;font-size: 18px;' class=\"small-box-footer text-\">"
+                                            ."$prezzo &euro;"
+                                        . "</a>"
+                                        . "</div>"
+                                    . "</a>"
                                 . "</div>";
                         }
                     } catch (PDOException $e) {

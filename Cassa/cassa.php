@@ -18,6 +18,12 @@ if (!$_SESSION['login']) {
     libreriePublic();
     ?>
     <link rel="stylesheet" href="CSS/Cassa.css">
+    <style type="text/css">
+        @font-face {
+            font-family: KaushanScript;
+            src: url(../Librerie/Font/KaushanScript-Regular.otf);
+        }
+    </style>
     <script type="text/javascript">
 
     </script>
