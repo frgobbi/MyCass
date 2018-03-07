@@ -68,14 +68,14 @@ function BodyAdmin()
                                             $n_p = $row['nome_p'];
                                             $pre = $row['prezzo'];
                                             $nome_c = $row['nome_cat'];
-                                            $id_prod= $row['id_prodotto'];
+                                            $id_prod = $row['id_prodotto'];
                                             echo "<tr>"
                                                 . "<td>$n_p</td>"
                                                 . "<td>$pre &euro;</td>"
                                                 . "<td>$nome_c</td>"
                                                 . "<td><button class='btn btn-primary btn-block' onclick=\"popProd($id_prod)\"><i class='fas fa-pencil-alt'></i></button></td>"
-                                            . "</tr>";
-                                            }
+                                                . "</tr>";
+                                        }
                                     } catch (PDOException $e) {
                                         echo $e->getMessage();
                                     }
@@ -132,18 +132,18 @@ function BodyAdmin()
                                     <tbody id="bodyTG">
                                     <?php
                                     include "../connessione.php";
-                                    foreach ($connessione->query("SELECT DATE_FORMAT(data_g, '%d-%m-%Y') AS data_giorno, incasso, chiuso FROM giorno") as $row){
+                                    foreach ($connessione->query("SELECT DATE_FORMAT(data_g, '%d-%m-%Y') AS data_giorno, incasso, chiuso FROM giorno") as $row) {
                                         $incasso = $row['incasso'];
                                         $data = $row['data_giorno'];
                                         $flag = $row['chiuso'];
                                         echo "<tr>";
-                                            echo "<td>$data</td>";
-                                            echo "<td>$incasso &euro;</td>";
-                                            if($flag==0){
-                                                echo "<td><button class='btn btn-danger btn-block'><i class=\"fas fa-window-close\"></i></button></td>";
-                                            } else {
-                                                echo "<td><button disabled class='btn btn-danger btn-block disabled'><i class=\"fas fa-window-close\"></i></button></td>";
-                                            }
+                                        echo "<td>$data</td>";
+                                        echo "<td>$incasso &euro;</td>";
+                                        if ($flag == 0) {
+                                            echo "<td><button class='btn btn-danger btn-block'><i class=\"fas fa-window-close\"></i></button></td>";
+                                        } else {
+                                            echo "<td><button disabled class='btn btn-danger btn-block disabled'><i class=\"fas fa-window-close\"></i></button></td>";
+                                        }
 
                                         echo "</tr>";
                                         $connessione = null;
@@ -171,7 +171,9 @@ function BodyAdmin()
                 <div class="box-body">
                     <div class='row'>
                         <div class='col-sm-12'>
-                            <button class='btn btn-success btn-block' onclick="$('#modal-new_utente').modal('show')">Nuovo Utente</button>
+                            <button class='btn btn-success btn-block' onclick="$('#modal-new_utente').modal('show')">
+                                Nuovo Utente
+                            </button>
                         </div>
                     </div>
                     <br>
@@ -220,6 +222,61 @@ function BodyAdmin()
 
             </div><!-- /.box -->
         </div>
+    </div>
+    <?php
+}
+
+function BodyCassa()
+{
+    ?>
+    <div class="row">
+        <div class="col-lg-9 col-md-8 col-sm-12">
+            <div class="box box-warning">
+                <div class="box-header" data-toggle="tooltip" title="Header tooltip">
+                    <h3 class="box-title">Prodotti</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-warning btn-xs" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                        <button class="btn btn-warning btn-xs" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                    <?php
+                    $connessione = null;
+                    include "../connessione.php";
+                    try {
+                        foreach ($connessione->query("SELECT * FROM `prodotto` INNER JOIN cat_prodotto ON cat_prodotto.id_cat_prodotto = prodotto.id_cat_prodotto WHERE disp = 1 ORDER BY(prodotto.id_cat_prodotto) ASC") as $row) {
+                            $nome = $row['nome_p'];
+                            $colore = $row['colore'];
+                            echo "<div class=\"col-lg-3 col-md-6\">"
+                                . "<a href=\"#\">"
+                                . "<!-- small box -->"
+                                . "<div class=\"small-box $colore\">"
+                                . "<div class=\"inner\">"
+                                . "<h4 style='color: white'>$nome</h4>"
+                                . "</div>"
+                                . "<div class='icon'>"
+                                . "<i class=\"fas fa-utensils\"></i>"
+                                . "</div>"
+                                . "<a href=\"#\" class=\"small-box-footer\"><br>"
+                                . "</a>"
+                                . "</div>"
+
+                                . "</a>"
+                                . "</div>";
+                        }
+                    } catch (PDOException $e) {
+                        echo $e->getMessage();
+                    }
+                    $connessione = null;
+                    ?>
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-12"></div>
     </div>
     <?php
 }

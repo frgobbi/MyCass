@@ -23,22 +23,22 @@ try {
         $colore = $row['colore'];
         echo "<tr>"
             . "<td id='nome_$id_cat'>$nome_cat</td>";
-        if (strcmp($colore, "bg-danger") == 0) {
+        if (strcmp($colore, "bg-red") == 0) {
             echo "<td id='colore_$id_cat'>Rosso</td>";
         } else {
             if (strcmp($colore, "bg-orange") == 0) {
                 echo "<td id='colore_$id_cat'>Arancione</td>";
             } else {
-                if (strcmp($colore, "bg-warning") == 0) {
+                if (strcmp($colore, "bg-yellow") == 0) {
                     echo "<td id='colore_$id_cat'>Giallo</td>";
                 } else {
-                    if (strcmp($colore, "bg-success") == 0) {
+                    if (strcmp($colore, "bg-green") == 0) {
                         echo "<td id='colore_$id_cat'>Verde</td>";
                     } else {
                         if (strcmp($colore, "bg-teal") == 0) {
                             echo "<td id='colore_$id_cat'>Verde Acqua</td>";
                         } else {
-                            if (strcmp($colore, "bg-info") == 0) {
+                            if (strcmp($colore, "bg-aqua") == 0) {
                                 echo "<td id='colore_$id_cat'>Azzurro</td>";
                             } else {
                                 if (strcmp($colore, "bg-primary") == 0) {
@@ -66,7 +66,7 @@ try {
                 }
             }
         }
-        echo "<td id='button_$id_cat'><button onclick=\"modCat($id_cat)\" class='btn btn-primary btn-block'><i class='fa fa-pencil'></i></button></td>"
+        echo "<td id='button_$id_cat'><button onclick=\"modCat($id_cat)\" class='btn btn-primary btn-block'><i class='fas fa-pencil-alt'></i></button></td>"
             . "</tr>";
     }
 } catch (PDOException $e) {

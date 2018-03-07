@@ -1,0 +1,18 @@
+.barra_y {
+    overflow-y: auto;
+}
+.numeri{
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 30px;
+}
+.display{
+    background-color: white;
+    font-family: Arial;
+    font-size: 45px;
+    margin-bottom: 12px;
+    resize: none;
+    height: 70px;
+    overflow-y: hidden;
+    /*color: lawngreen;*/
+}

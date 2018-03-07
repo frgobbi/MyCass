@@ -137,12 +137,12 @@ if (!$_SESSION['login']) {
                     <div class="form-group">
                         <label for="colore">Colore:</label>
                         <select class="form-control" name="colore" id="colore">
-                            <option value="bg-danger">Rosso</option>
+                            <option value="bg-red">Rosso</option>
                             <option value="bg-orange">Arancione</option>
-                            <option value="bg-warning">Giallo</option>
-                            <option value="bg-success">Verde</option>
+                            <option value="bg-yellow">Giallo</option>
+                            <option value="bg-green">Verde</option>
                             <option value="bg-teal">Verde Acqua</option>
-                            <option value="bg-info">Azzurro</option>
+                            <option value="bg-acqua">Azzurro</option>
                             <option value="bg-primary">Blu</option>
                             <option value="bg-navy">Blu Scuro</option>
                             <option value="bg-purple">Viola</option>

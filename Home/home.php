@@ -12,5 +12,9 @@ if (!$_SESSION['login']) {
 include "../Componenti_base/BHome.php";
 if ($_SESSION['cat'] == 1) {
     echo "<script type='text/javascript'>window.location.href='../Admin/admin.php'</script>";
+} else {
+    if($_SESSION['cat']==2){
+        echo "<script type='text/javascript'>window.location.href='../Cassa/cassa.php'</script>";
+    }
 }
 ?>

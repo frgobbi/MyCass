@@ -1,12 +1,11 @@
 function creaUtente() {
-    document.getElementById("formU").reset();
     var user = $('#userU').val();
     var nome = $('#nomeU').val();
     var cognome = $('#cognomeU').val();
     var cat = $('#id_catU').val();
     var pwd1 = $('#pwd1').val();
     var pwd2 = $('#pwd2').val();
-
+   // alert(user+"_"+nome+"_"+cognome+"_"+cat+"_"+pwd1);
 
     if(pwd1==pwd2){
         $.ajax({
@@ -47,6 +46,7 @@ function creaUtente() {
     } else {
         $('#WAUtente').show();
     }
+    document.getElementById("formU").reset();
 }
 function popModUtente(id_u){
     var cod;
