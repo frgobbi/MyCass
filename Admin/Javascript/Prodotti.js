@@ -99,7 +99,7 @@ function bodyModProd(id_prod) {
         data: "id_prod=" + id_prod,
         dataType: "html",
         success: function (risposta) {
-            console.log(ogg);
+            var ogg = $.parseJSON(risposta);
 
             cod += "<form method='post' action='metodi/modProd.php?id_prod="+ogg.prodotto.id_prodotto+"'>";
             cod += "<div class='form-group'>" +
