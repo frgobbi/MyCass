@@ -231,48 +231,82 @@ function BodyCassa()
     ?>
     <div class="row">
         <div class="col-lg-9 col-md-8 col-sm-12">
-            <div class="box box-warning">
-                <div class="box-header" data-toggle="tooltip" title="Header tooltip">
-                    <h3 class="box-title">Prodotti</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-warning btn-xs" data-widget="collapse"><i
-                                    class="fa fa-minus"></i></button>
-                        <button class="btn btn-warning btn-xs" data-widget="remove"><i
-                                    class="fa fa-times"></i></button>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-warning">
+                        <div class="box-header" data-toggle="tooltip" title="Header tooltip">
+                            <h3 class="box-title" style="font-family: KaushanScript">Prodotti</h3>
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-warning btn-xs" data-widget="collapse"><i
+                                            class="fa fa-minus"></i></button>
+                                <button class="btn btn-warning btn-xs" data-widget="remove"><i
+                                            class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body" style="height: 570px">
+                            <div class="row">
+                                <?php
+                                $connessione = null;
+                                include "../connessione.php";
+                                try {
+                                    foreach ($connessione->query("SELECT * FROM `prodotto` INNER JOIN cat_prodotto ON cat_prodotto.id_cat_prodotto = prodotto.id_cat_prodotto WHERE disp = 1 ORDER BY(prodotto.id_cat_prodotto) ASC") as $row) {
+                                        $nome = $row['nome_p'];
+                                        $colore = $row['colore'];
+                                        $prezzo = $row['prezzo'];
+                                        echo "<div class=\"col-lg-3 col-md-6\">"
+                                            . "<a href=\"#\">"
+                                            . "<!-- small box -->"
+                                            . "<div class=\"small-box $colore\">"
+                                            . "<h4 style='font-size:24px; padding-top:15px; color: white; font-family: KaushanScript' class='text-center'>$nome</h4>"
+                                            . "<a href=\"#\" style='font-family: KaushanScript;font-size: 18px;' class=\"small-box-footer text-\">"
+                                            . "$prezzo &euro;"
+                                            . "</a>"
+                                            . "</div>"
+                                            . "</a>"
+                                            . "</div>";
+                                    }
+                                } catch (PDOException $e) {
+                                    echo $e->getMessage();
+                                }
+                                $connessione = null;
+                                ?>
+                            </div>
+                        </div><!-- /.box-body -->
                     </div>
                 </div>
-                <div class="box-body">
-                    <div class="row">
-                    <?php
-                    $connessione = null;
-                    include "../connessione.php";
-                    try {
-                        foreach ($connessione->query("SELECT * FROM `prodotto` INNER JOIN cat_prodotto ON cat_prodotto.id_cat_prodotto = prodotto.id_cat_prodotto WHERE disp = 1 ORDER BY(prodotto.id_cat_prodotto) ASC") as $row) {
-                            $nome = $row['nome_p'];
-                            $colore = $row['colore'];
-                            $prezzo =$row['prezzo'];
-                            echo "<div class=\"col-lg-3 col-md-6\">"
-                                    . "<a href=\"#\">"
-                                        . "<!-- small box -->"
-                                        . "<div class=\"small-box $colore\">"
-                                            . "<h4 style='font-size:24px; padding-top:15px; color: white; font-family: KaushanScript' class='text-center'>$nome</h4>"
-                                        . "<a href=\"#\" style='font-family: KaushanScript;font-size: 18px;' class=\"small-box-footer text-\">"
-                                            ."$prezzo &euro;"
-                                        . "</a>"
-                                        . "</div>"
-                                    . "</a>"
-                                . "</div>";
-                        }
-                    } catch (PDOException $e) {
-                        echo $e->getMessage();
-                    }
-                    $connessione = null;
-                    ?>
-                    </div>
-                </div><!-- /.box-body -->
+            </div>
+            <div class="row" style="font-family: KaushanScript">
+                <div class="col-xs-3">
+                    <button class="btn btn-primary btn-lg btn-block">Prova</button>
+                </div>
+                <div class="col-xs-3">
+                    <button class="btn btn-primary btn-lg btn-block">Prova</button>
+                </div>
+                <div class="col-xs-3">
+                    <button class="btn btn-primary btn-lg btn-block">Prova</button>
+                </div>
+                <div class="col-xs-3">
+                    <button class="btn btn-primary btn-lg btn-block">Prova</button>
+                </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-12"></div>
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="row">
+                <div class="box box-primary">
+                    <div class="box-header" data-toggle="tooltip" title="Header tooltip"></div>
+                    <div class="box-body" style="height: 590px">
+
+                    </div><!-- /.box-body -->
+                </div>
+            </div>
+            <div class="row" style="font-family: KaushanScript">
+                <div class="btn-group btn-group-justified">
+                    <a href="#"  class="btn btn-primary btn-lg">Sub</a>
+                    <a href="#"  class="btn btn-primary btn-lg">Totale</a>
+                    <a href="#"  class="btn btn-primary btn-lg">Card</a>
+                </div>
+            </div>
+        </div>
     </div>
     <?php
 }
