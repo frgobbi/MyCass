@@ -1,4 +1,4 @@
-.barra_y {
+/*.barra_y {
     overflow-y: auto;
 }
 .numeri{
@@ -14,5 +14,5 @@
     resize: none;
     height: 70px;
     overflow-y: hidden;
-    /*color: lawngreen;*/
-}
+    /*color: lawngreen;
+}*/
