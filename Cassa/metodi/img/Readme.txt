@@ -1,0 +1,1 @@
+In questa cartella vengono inserite le immagini dei qrcode.
