@@ -104,7 +104,7 @@ function bodyModProd(id_prod) {
             cod += "<form method='post' action='metodi/modProd.php?id_prod="+ogg.prodotto.id_prodotto+"'>";
             cod += "<div class='form-group'>" +
                 "<label for='nome'>Nome prodotto:</label>" +
-                "<input type='text' class='form-control' name='nome' id='nome' value='" + ogg.prodotto.nome_p + "' required>" +
+                "<input type='text' class='form-control' maxlength='12' name='nome' id='nome' value='" + ogg.prodotto.nome_p + "' required>" +
                 "</div>";
 
             cod += "<div class='form-group'>" +

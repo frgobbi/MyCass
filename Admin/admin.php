@@ -142,7 +142,7 @@ if (!$_SESSION['login']) {
                             <option value="bg-yellow">Giallo</option>
                             <option value="bg-green">Verde</option>
                             <option value="bg-teal">Verde Acqua</option>
-                            <option value="bg-acqua">Azzurro</option>
+                            <option value="bg-aqua">Azzurro</option>
                             <option value="bg-primary">Blu</option>
                             <option value="bg-navy">Blu Scuro</option>
                             <option value="bg-purple">Viola</option>
@@ -181,7 +181,7 @@ if (!$_SESSION['login']) {
                 <form method="post" action="metodi/addProd.php">
                     <div class="form-group">
                         <label for="nome_p">Nome prodotto:</label>
-                        <input type="text" class="form-control" name="nome_p" id="nome_p" placeholder="Hamburger"
+                        <input type="text" maxlength="12" class="form-control" name="nome_p" id="nome_p" placeholder="Hamburger"
                                required>
                     </div>
 

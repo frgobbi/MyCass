@@ -59,10 +59,13 @@ $giorno = "CREATE TABLE giorno("
 $comanda = "CREATE TABLE comanda ("
     . "id_comanda INT PRIMARY KEY AUTO_INCREMENT,"
     . "nome_comanda VARCHAR(255),"
-    . "code_C VARCHAR(255) UNIQUE,"
+    . "id_giorno INT,"
+    . "FOREIGN KEY (id_giorno) REFERENCES giorno(id_giorno),"
+    . "code_c VARCHAR(255) UNIQUE,"
     . "ora_c TIME,"
     . "flag_b INT NOT NULL DEFAULT '0',"
-    . "flag_pos INT NOT NULL DEFAULT '0'"
+    . "flag_pos INT NOT NULL DEFAULT '0',"
+    . "evasa INT NOT NULL DEFAULT '0'"
     . ")";
 
 $ordine = "CREATE TABLE ordine ("
@@ -72,9 +75,7 @@ $ordine = "CREATE TABLE ordine ("
     . "id_prodotto INT,"
     . "FOREIGN KEY (id_prodotto) REFERENCES prodotto(id_prodotto),"
     . "id_comanda INT,"
-    . "FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),"
-    . "id_giorno INT,"
-    . "FOREIGN KEY (id_giorno) REFERENCES giorno(id_giorno)"
+    . "FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda)"
     . ")";
 
 $ordine_v = "CREATE TABLE ordine_v ("
@@ -83,9 +84,7 @@ $ordine_v = "CREATE TABLE ordine_v ("
     . "FOREIGN KEY (username) REFERENCES utente(username),"
     . "importo DOUBLE,"
     . "id_comanda INT,"
-    . "FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda),"
-    . "id_giorno INT,"
-    . "FOREIGN KEY (id_giorno) REFERENCES giorno(id_giorno)"
+    . "FOREIGN KEY (id_comanda) REFERENCES comanda(id_comanda)"
     . ")";
 
 include "../connessione.php";
@@ -102,5 +101,6 @@ try{
     $connessione->exec($ordine_v);
     echo "TABELLE CREATE";
 }catch (PDOException $e){
-    echo "C\'E\' stato un errore";
+    echo "C' E' stato un errore<br>";
+    echo $e->getMessage();
 }

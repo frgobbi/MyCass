@@ -45,7 +45,7 @@ class barcode {
 
     public function set_label($label){
         if(is_null($label)){
-            $this->label = "Supernova 2017";
+            $this->label = "Supernova 2018";
         } else {
             $this->label = $label;
         }
@@ -72,11 +72,11 @@ class barcode {
             }
 
             $checkdigit = 10 - $checksum%10;
-            echo $checkdigit;
+            //echo $checkdigit;
             $code .=$checkdigit;
             $code_display = $code;
             $code = "*".substr($code,0,6)."#".substr($code,6,6)."*";
-            echo $code;
+            //echo $code;
 
             $this->width = $this->barwidth*95+$this->padding*2;
             $this->barheight =  $this->barwidth*95*0.75;
@@ -111,7 +111,7 @@ class barcode {
                 }
             }
 
-            $font = "Aller/Aller_Rg.ttf";
+            $font = "../../Librerie/BarCode/Aller/Aller_Rg.ttf";
 
             $digit1 = substr($code_display,0,1);
             $leftdigits = substr($code_display,1,5);
