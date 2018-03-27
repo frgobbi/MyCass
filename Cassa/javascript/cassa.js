@@ -58,12 +58,19 @@ function popupProdotto(id_p) {
                                 }
                             }
                             if (trovato == 1) {
-                                cod += "<div class='col-sm-6'>" +
-                                    "<div class='form-check' style='display: inline'>" +
+                                cod += "<div style='padding-bottom: 10px;' class='col-sm-6'>" +
+                                    /*"<div class='form-check' style='display: inline'>" +
                                     "<label class='form-check-label'>" +
                                     "<input checked type='checkbox' name='ingredienti[]' class='form-check-input' value='" + ogg.arrayI[i][0] + "'> " + ogg.arrayI[i][1] +
                                     "</label>" +
+                                    "</div>" +*/
+                                    "<div class=\"btn-group\" data-toggle=\"buttons\">" +
+                                    "<label class=\"btn btn-primary active\">" +
+                                    "<input type=\"checkbox\" checked name='ingredienti[]' value='" + ogg.arrayI[i][0] + "' autocomplete=\"off\">" +
+                                    "<span class=\"glyphicon glyphicon-ok\"></span>" +
+                                    "</label>" +
                                     "</div>" +
+                                    "<label>&nbsp;"+ ogg.arrayI[i][1]+"</label>"+
                                     "</div>";
                             }
                         }
@@ -230,9 +237,9 @@ function cancella() {
         a_id_p[cont_p] = null;
         a_prezzi_p[cont_p] = null;
         a_desc_p[cont_p] = null;
-        if(a_ing_p[cont_p] == 1){
+        if (a_ing_p[cont_p] == 1) {
             cont_p_o--;
-            a_p_ing[cont_p_o]=null;
+            a_p_ing[cont_p_o] = null;
         } else {
             a_ing_p[cont_p] = null;
         }
@@ -271,14 +278,12 @@ function subtotale() {
         alert("Prima ordina qualcosa!!!")
     }
 }
-
 //annullamento del resto
 function annullaResto() {
     flagPagamento = false;
     $('#modal_subtot').modal('hide');
-    totale_ord();
+    totale_ord(0);
 }
-
 //totale Ordine
 function totale_ord(tipo) {
     if (cont_p > 0) {
@@ -295,24 +300,24 @@ function totale_ord(tipo) {
         var strQuantita = "";
         var strDesc = "";
         var strING = "";
-
+        var nomeComanda = $('#nominativo').val();
         for (i = 0; i < a_comp.length; i++) {
             if (i == 0) {
                 strId += "id" + i + "=" + a_comp[i][0];
                 strPrezzi += "prezzi" + i + "=" + a_comp[i][3];
                 strQuantita += "quant" + i + "=" + a_comp[i][2];
                 strDesc += "desc" + i + "=" + a_comp[i][1];
-                strING += "prod_i"+ i + "=" + a_comp[i][4]
+                strING += "prod_i" + i + "=" + a_comp[i][4]
             } else {
                 strId += "&id" + i + "=" + a_comp[i][0];
                 strPrezzi += "&prezzi" + i + "=" + a_comp[i][3];
                 strQuantita += "&quant" + i + "=" + a_comp[i][2];
                 strDesc += "&desc" + i + "=" + a_comp[i][1];
-                strING += "&prod_i"+ i + "=" + a_comp[i][4]
+                strING += "&prod_i" + i + "=" + a_comp[i][4]
             }
         }
-        var parametri = strId + "&" + strPrezzi + "&" + strQuantita + "&" + strDesc + "&" + strING + "&num_P=" + cont_p+"&tipo="+tipo;
-
+        var parametri = strId + "&" + strPrezzi + "&" + strQuantita + "&" + strDesc + "&" + strING + "&nominativo=" + nomeComanda + "&num_P=" + cont_p + "&tipo=" + tipo;
+        $('#nominativo').val("");
         $.ajax({
             type: "POST",
             url: "metodi/acquisto.php",
@@ -320,11 +325,11 @@ function totale_ord(tipo) {
             dataType: "html",
             success: function (risposta) {
                 var ogg = $.parseJSON(risposta);
-                if (ogg.esito==0) {
+                if (ogg.esito == 0) {
                     var str = "";
-                    if(tipo==0) {
+                    if (tipo == 0) {
                         if (flagPagamento == false) {
-                            str = strStampa("SC");
+                            str = strStampa("SC", ogg.numO);
                         } else {
                             contanti = input_sub;
                             resto = parseFloat(contanti) - parseFloat(totale);
@@ -347,10 +352,18 @@ function totale_ord(tipo) {
                             $('#scontrino').animate({scrollTop: $('#scontrino').height()}, 100);
                         }
                     } else {
-                        //Buono sconto
+                        //Pagamento con Pos
+                        if (tipo == 2) {
+                            str = strStampa("POS");
+                        } else {
+                            if (tipo == 1) {
+                                str = strStampa("BUONO");
+                            }
+                        }
                     }
-                    if(ogg.ingredienti == 1){
-                        str += ogg.foto;
+                    if (ogg.ingredienti == 1) {
+                        str += ogg.codComanda + ";" + ogg.NomeC + ";" + ogg.numO;
+                        console.log(str);
                     }
                     if (flagStampante == true) {
                         stampa(str);
@@ -377,7 +390,6 @@ function totale_ord(tipo) {
         alert("Prima ordina qualcosa!!!")
     }
 }
-
 //annullamento del resto
 function annullaResto() {
     flagPagamento = false;
@@ -385,11 +397,9 @@ function annullaResto() {
     totale_ord();
 
 }
-
 /*______________________________________________________________________________________________________________________
 * Funzioni Stampa scontrino Virtuale
 *_____________________________________________________________________________________________________________________*/
-
 //Scontrino virtuale
 function scontrino_v() {
     $('#area_sub_tot').hide();
@@ -422,18 +432,17 @@ function scontrino_v() {
             + "</div>";
         $('#area_ordine').append(codice);
         tot = tot + parseFloat(prezzo);
-        tot = arrotonda(tot,2);
+        tot = arrotonda(tot, 2);
     }
     $('#tot').empty();
     var cod = "<h3><b>" + tot + " &euro;</b></h3>"
     $('#tot').append(cod);
 }
-
 //Scontrino virtuale vuoto
 function scontrinoCanc() {
     //$('#scontrino').removeClass('barra_y');
-    input_varie="";
-    input_sub="";
+    input_varie = "";
+    input_sub = "";
     $('#area_sub_tot').hide();
     $('#area_resto').hide();
     $('#area_ordine').empty();
@@ -441,11 +450,9 @@ function scontrinoCanc() {
     $('#display_varie').empty();
     $('#tot').empty();
 }
-
 /*______________________________________________________________________________________________________________________
 * Funzioni per la gestione dei dati
 ______________________________________________________________________________________________________________________*/
-
 //Campatta Array dei prodotti in un'unica matrice
 function compattaArray() {
     var indice = 0;
@@ -469,20 +476,19 @@ function compattaArray() {
                         cont++;
                     }
                 }
-                if(a_ing_p[i]==1){
+                if (a_ing_p[i] == 1) {
                     contrING = 1;
                 }
-                a_comp[indice] = [a_id_p[i], a_desc_p[i], cont, a_prezzi_p[i],contrING];
+                a_comp[indice] = [a_id_p[i], a_desc_p[i], cont, a_prezzi_p[i], contrING];
                 indice++;
             }
         } else {
-            a_comp[indice] = [a_id_p[i], "Varie", 1, a_prezzi_p[i],0];
+            a_comp[indice] = [a_id_p[i], "Varie", 1, a_prezzi_p[i], 0];
             indice++;
         }
     }
     return a_comp;
 }
-
 //Arrotonda a 2 cifre
 function arrotonda(valore, nCifre) {
     if (isNaN(parseFloat(valore)) || isNaN(parseInt(nCifre)))
@@ -490,26 +496,45 @@ function arrotonda(valore, nCifre) {
     else
         return Math.round(valore * Math.pow(10, nCifre)) / Math.pow(10, nCifre);
 }
-
 /*______________________________________________________________________________________________________________________
 * PARTE DI STAMPA
  */
-
-//toString Inter0 (massimo 3 cifre)
+//toString Inter0 (massimo 4 cifre)
 function toStringIntero(numero) {
     var str = "";
     if (numero < 10) {
-        str += "  " + numero;
+        str += "   " + numero;
     } else {
         if (numero < 100) {
-            str += " " + numero;
+            str += "  " + numero;
         } else {
-            str += numero;
+            if (numero < 1000) {
+                str += " " + numero;
+            } else {
+                str += numero;
+            }
         }
     }
     return str;
 }
-
+//Tostring NUMERO ORDINE
+function toStringNumO(numero) {
+    var str = "";
+    if (numero < 10) {
+        str += "000" + numero;
+    } else {
+        if (numero < 100) {
+            str += "00" + numero;
+        } else {
+            if (numero < 1000) {
+                str += "0" + numero;
+            } else {
+                str += numero;
+            }
+        }
+    }
+    return str;
+}
 //toString Decimale (3 cifre parte intera, 2 cifre parte decimale
 function toStringDecimale(numero) {
     var arr_num = numero.toString().split('.');
@@ -535,13 +560,13 @@ function toStringDecimale(numero) {
     }
     return str;
 }
-
 //Stringa per stampante
-function strStampa(tipo) {
+function strStampa(tipo, numO) {
     var a_comp = compattaArray();
     var str = "";
+    var numOrd = toStringNumO(numO);
     if (tipo.localeCompare("SC") == 0) {
-        str += "2_1                                   EURO_1";
+        str += "2_1           Sontrino N° " + numOrd + "               :                                    EURO_1";
         for (i = 0; i < a_comp.length; i++) {
             var sp1 = "";//spazio1
             var numTx = a_comp[i][1].length;//parte testo
@@ -564,7 +589,7 @@ function strStampa(tipo) {
 
         //TOTALE SCONTRINO
         str += "_2_1";
-        str += "TOTALE                           ";
+        str += "TOTALE                            ";
         var cifra = toStringDecimale(tot); //tot prezzo
         str += cifra + ":";
         //CONTANTI E RESTO
@@ -577,12 +602,12 @@ function strStampa(tipo) {
             str += cifra + ":";
         }
         str += "_4_5";
-        if(cont_p_o>0){
+        if (cont_p_o > 0) {
             str += stringaIngredienti();
         }
     } else {
-        if (tipo.localeCompare("SC-CARD") == 0) {
-            str += "2_1                                   EURO_1";
+        if (tipo.localeCompare("POS") == 0) {
+            str += "2_1           Sontrino N° " + numOrd + "               :                                    EURO_1";
             for (i = 0; i < a_comp.length; i++) {
                 var sp1 = "";//spazio1
                 var numTx = a_comp[i][1].length;//parte testo
@@ -604,13 +629,46 @@ function strStampa(tipo) {
             }
             //TOTALE SCONTRINO
             str += "_2_1";
-            str += "TOTALE                           ";
+            str += "TOTALE                            ";
             var cifra = toStringDecimale(tot); //tot prezzo
             str += cifra + ":_2_";
             str += "1          PAGAMENTO CON BANCOMAT          ";
             str += "_4_5";
-            if(cont_p_o>0){
+            if (cont_p_o > 0) {
                 str += stringaIngredienti();
+            }
+        } else {
+            if (tipo.localeCompare("BUONO") == 0) {
+                str += "2_1           Sontrino N° " + numOrd + "               :                                    EURO_1";
+                for (i = 0; i < a_comp.length; i++) {
+                    var sp1 = "";//spazio1
+                    var numTx = a_comp[i][1].length;//parte testo
+                    var mancanti = 12 - parseInt(numTx);
+                    var app = "";
+                    for (j = 0; j < mancanti; j++) {
+                        app += " ";
+                    }
+                    var Tx = a_comp[i][1] + app;//parte testo
+                    var sp2 = "     ";//spazio2
+                    var qua = toStringIntero(a_comp[i][2]);//parte numeri
+                    var deci = toStringDecimale(a_comp[i][3]);
+                    var molt = qua + "X" + deci; //qua e prezzo
+                    var sp3 = "      ";//spazio3
+                    var prezzo = parseInt(a_comp[i][2]) * parseFloat(a_comp[i][3]);
+                    var prezzo_str = toStringDecimale(prezzo); //tot prezzo
+                    var sp4 = " ";//spazio4
+                    str += sp1 + Tx + sp2 + molt + sp3 + prezzo_str + sp4 + ":";
+                }
+                //TOTALE SCONTRINO
+                str += "_2_1";
+                str += "TOTALE                            ";
+                var cifra = toStringDecimale(tot); //tot prezzo
+                str += cifra + ":_2_";
+                str += "1               BUONO SCONTO               ";
+                str += "_4_5";
+                if (cont_p_o > 0) {
+                    str += stringaIngredienti();
+                }
             }
         }
     }
@@ -620,24 +678,24 @@ function strStampa(tipo) {
 //STRINGA INGREDIENTI
 function stringaIngredienti() {
     var str = "";
-        str += "_6";
-        for (i=0;i<cont_p_o;i++){
-            //console.log(a_p_ing[i]);
-            str += a_p_ing[i].id+":";
-            str += a_p_ing[i].nome+":";
-            for(z=0;z<a_p_ing[i].idIngredienti.length;z++){
-                str += a_p_ing[i].idIngredienti[z]+"-";
-            }
-            str += ":";
-            for(z=0;z<a_p_ing[i].nomeIngredineti.length;z++){
-                str += a_p_ing[i].nomeIngredineti[z]+"-";
-            }
-            str += ":";
-            for(z=0;z<a_p_ing[i].flagIngredienti.length;z++){
-                str += a_p_ing[i].flagIngredienti[z]+"-";
-            }
-            str += ";";
+    str += "_6";
+    for (i = 0; i < cont_p_o; i++) {
+        //console.log(a_p_ing[i]);
+        str += a_p_ing[i].id + ":";
+        str += a_p_ing[i].nome + ":";
+        for (z = 0; z < a_p_ing[i].idIngredienti.length; z++) {
+            str += a_p_ing[i].idIngredienti[z] + "-";
         }
+        str += ":";
+        for (z = 0; z < a_p_ing[i].nomeIngredineti.length; z++) {
+            str += a_p_ing[i].nomeIngredineti[z] + "-";
+        }
+        str += ":";
+        for (z = 0; z < a_p_ing[i].flagIngredienti.length; z++) {
+            str += a_p_ing[i].flagIngredienti[z] + "-";
+        }
+        str += ";";
+    }
     return str;
 }
 //Stampa Scontrino
@@ -649,6 +707,195 @@ function stampa(str) {
             data: "comando=" + str,
             dataType: "html",
             success: function () {
+            },
+            error: function () {
+                alert("Scontrino non stampato");
+            }
+        });
+    }
+}
+//Crea body del modal delle info cassa
+function creaInfo() {
+    var codice = "";
+    $.ajax({
+        type: "GET",
+        url: "metodi/Dati_Info_giorno.php",
+        success: function (risposta) {
+            var ogg = $.parseJSON(risposta);
+            console.log(ogg);
+            codice += "<div class='row'>";
+            codice += "<div class='col-lg-8 col-md-8 col-sm-12'>"+
+                "<div class=\"box box-primary\">" +
+                "<div class=\"box-header\" data-toggle=\"tooltip\" title=\"Header tooltip\">" +
+                "<h3 class=\"box-title\">Ordini Fatti</h3>" +
+                "<div class=\"box-tools pull-right\">" +
+                //"<button class=\"btn btn-warning btn-xs\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i></button>" +
+                //"<button class=\"btn btn-warning btn-xs\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>" +
+                "</div>" +
+                "</div>" +
+                "<div class=\"box-body\" style=\"height: 410px;  overflow-y: auto\">" +
+                "<div class='table-responsive' >" +
+                "<table class=\"table table-bordered table-hover\">" +
+                "<thead>" +
+                "<tr>" +
+                "<th>Numero Ordine</th>" +
+                "<th>Nome Ordine</th>" +
+                "<th>Ora Ordinazione</th>" +
+                "<th>Ristampa</th>" +
+                "</tr>" +
+                "</thead>" +
+                "<tbody style=\"height: 300px;\">";
+            for (i = 0; i < ogg.ordini.length; i++) {
+                codice += "<tr>" +
+                    "<td>Ordine n&deg; " + ogg.ordini[i]['num_o'] + "</td>" +
+                    "<td>" + ogg.ordini[i]['nome_comanda'] + "</td>" +
+                    "<td>" + ogg.ordini[i]['ora'] + "</td>" +
+                    "<td class='text-center'><button class='btn btn-primary btn-block' onclick=\"ristampa('"+ogg.ordini[i]['num_o']+"','"+ogg.id_g+"')\"><i class=\"fas fa-print\" aria-hidden=\"true\"></i></button></td>" +
+                    "</tr>";
+            }
+            codice += "</tbody>" +
+                "</table>" +
+                "</div>" +
+                "</div>" +<!-- /.box-body -->
+                "</div>" +
+                "</div>";
+            codice += "<div class='col-lg-4 col-md-4 col-sm-12'>" +
+                "<div class=\"box box-primary\">" +
+                "<div class=\"box-header\" data-toggle=\"tooltip\" title=\"Header tooltip\">" +
+                "<h4>Stampante scontrini e comande</h4>" +
+                "<div class=\"box-tools pull-right\">" +
+                //"<button class=\"btn btn-warning btn-xs\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i></button>" +
+                //"<button class=\"btn btn-warning btn-xs\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>" +
+                "</div>" +
+                "</div>" +
+                "<div class=\"box-body text-center\" style=\"\">";
+            if (flagStampante == true) {
+                codice += "<div class=\"btn-group\" id=\"status\" data-toggle=\"buttons\">"
+                    + "<label class=\"btn btn-default btn-on btn-lg active\">"
+                    + "<input type=\"radio\" onchange='stampanteOnOff()' id='stampanteON' value=\"1\" name=\"stampante\" checked=\"checked\">ON</label>"
+                    + "<label class=\"btn btn-default btn-off btn-lg\">"
+                    + "<input type=\"radio\" onchange='stampanteOnOff()' id='stampanteOFF' value=\"0\" name=\"stampante\">OFF</label>"
+                    + "</div>";
+            }
+            else {
+                codice += "<div class=\"btn-group\" id=\"status\" data-toggle=\"buttons\">"
+                    + "<label class=\"btn btn-default btn-on btn-lg\">"
+                    + "<input type=\"radio\" value=\"1\" id='stampanteON' onchange='stampanteOnOff()' name=\"stampante\">ON</label>"
+                    + "<label class=\"btn btn-default btn-off btn-lg active\">"
+                    + "<input type=\"radio\" value=\"0\" id='stampanteOFF' onchange='stampanteOnOff()' name=\"stampante\" checked=\"checked\">OFF</label>"
+                    + "</div>";
+            }
+            var IncassoT = parseFloat(ogg.totN) + parseFloat(ogg.totPOS);
+            IncassoT = arrotonda(IncassoT, 2);
+            codice += "</div><!-- /.box-body -->" +
+                "<div class='box-footer'><button class='btn btn-primary btn-block'>Apri Cassetto</button></div>" +
+                "</div>" +
+                "<div class=\"box box-primary\">" +
+                "<div class=\"box-header\" data-toggle=\"tooltip\" title=\"Header tooltip\">" +
+                "<h3 class=\"box-title\">Incassi</h3>" +
+                "<div class=\"box-tools pull-right\">" +
+                //"<button class=\"btn btn-warning btn-xs\" data-widget=\"collapse\"><i class=\"fa fa-minus\"></i></button>" +
+                //"<button class=\"btn btn-warning btn-xs\" data-widget=\"remove\"><i class=\"fa fa-times\"></i></button>" +
+                "</div>" +
+                "</div>" +
+                "<div class=\"box-body\" style=\"\">" +
+                "<div class=\"row\">" +
+                "</div>" +
+                "<ul class=\"list-group\">\n" +
+                "<li class=\"list-group-item \"><b>Incasso contanti:</b> " + arrotonda(ogg.totN, 2) + " &euro;</li>" +
+                "<li class=\"list-group-item\"><b>Incasso POS:</b> " + arrotonda(ogg.totPOS, 2) + " &euro;</li>" +
+                "<li class=\"list-group-item\"><b>Buoni Effettuati:</b> " + arrotonda(ogg.totBuono, 2) + " &euro;</li>" +
+                "<li class=\"list-group-item active list-group-item-primary\"><b>Incasso TOT<small>(contanti + POS)</small>:</b> " + IncassoT + " &euro;</li>" +
+                "</ul>" +
+                "</div><!-- /.box-body -->" +
+                "</div>" +
+                "</div>";
+            codice += "</div>";//chiusura
+            $('#bodyInfoC').empty();
+            $('#bodyInfoC').append(codice);
+        },
+        error: function () {
+            alert("Chiamata fallita");
+        }
+    });
+    $('#info_cassa').modal('show');
+}
+//Attivazione Stampannte o no
+function stampanteOnOff() {
+    var x = document.getElementById("stampanteON");
+    if (x.checked) {
+        flagStampante = true;
+    }
+
+    var x = document.getElementById("stampanteOFF");
+    if (x.checked) {
+        flagStampante = false;
+    }
+}
+//Ristampa scontrino
+function ristampa(id_comanda,id_giorno) {
+    alert("RISTAMPA");
+    if(flagStampante==true) {
+        $.ajax({
+            type: "POST",
+            url: "metodi/dati_ordine.php",
+            data: "id_giorno=" + id_giorno + "&id_ord=" + id_ord,
+            success: function (risposta) {
+                var ogg = $.parseJSON(risposta);
+                var tot_sc = 0;
+                var str = "";
+                str += "2_1           COPIA DELLO SCONTRINO          :                                   EURO_1";
+                //STAMPA DEI PRODOTTI DELLO SCONTRINO
+                for (i = 0; i < ogg.prodotti.length; i++) {
+                    var sp1 = "";//spazio1
+                    var numTx = ogg.prodotti[i].nome_p.length;//parte testo
+                    var mancanti = 12 - parseInt(numTx);
+                    var app = "";
+                    for (j = 0; j < mancanti; j++) {
+                        app += " ";
+                    }
+                    var Tx = ogg.prodotti[i].nome_p + app;//parte testo
+                    var sp2 = "     ";//spazio2
+                    var qua = toStringIntero(ogg.prodotti[i].num);//parte numeri
+                    var deci = toStringDecimale(ogg.prodotti[i].prezzo);
+                    var molt = qua + "X" + deci; //qua e prezzo
+                    var sp3 = "      ";//spazio3
+                    var prezzo = parseInt(ogg.prodotti[i].num) * parseFloat(ogg.prodotti[i].prezzo);
+                    var prezzo_str = toStringDecimale(prezzo); //tot prezzo
+                    tot_sc = parseFloat(tot_sc) + parseFloat(prezzo);
+                    var sp4 = " ";//spazio4
+                    str += sp1 + Tx + sp2 + molt + sp3 + prezzo_str + sp4 + ":";
+                }
+                //STAMPA DEI VARIE DELLO SCONTRINO
+                for (i = 0; i < ogg.varie.length; i++) {
+                    var sp1 = "";//spazio1
+                    var numTx = ogg.varie[i].nome_p.length;//parte testo
+                    var mancanti = 12 - parseInt(numTx);
+                    var app = "";
+                    for (j = 0; j < mancanti; j++) {
+                        app += " ";
+                    }
+                    var Tx = ogg.varie[i].nome_p + app;//parte testo
+                    var sp2 = "     ";//spazio2
+                    var qua = toStringIntero(ogg.varie[i].num);//parte numeri
+                    var deci = toStringDecimale(ogg.varie[i].prezzo);
+                    var molt = qua + "X" + deci; //qua e prezzo
+                    var sp3 = "      ";//spazio3
+                    var prezzo = parseInt(ogg.varie[i].num) * parseFloat(ogg.varie[i].prezzo);
+                    var prezzo_str = toStringDecimale(prezzo); //tot prezzo
+                    tot_sc = parseFloat(tot_sc) + parseFloat(prezzo);
+                    var sp4 = " ";//spazio4
+                    str += sp1 + Tx + sp2 + molt + sp3 + prezzo_str + sp4 + ":";
+                }
+
+
+                //TOTALE SCONTRINO
+                str += "_2_1";
+                str += "TOTALE                           ";
+                var cifra = toStringDecimale(tot_sc); //tot prezzo
+                str += cifra + ":";
+                str += "_4";
+                stampa(str);
             },
             error: function () {
                 alert("Scontrino non stampato");

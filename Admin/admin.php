@@ -53,6 +53,14 @@ if (!$_SESSION['login']) {
             $('#modal-mod_utente').modal('show');
         }
     </script>
+    <style type="text/css">
+        .btn span.glyphicon {
+            opacity: 0;
+        }
+        .btn.active span.glyphicon {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body class="skin-blue wysihtml5-supported sidebar-collapse">
 <div class="wrapper">

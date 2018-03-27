@@ -57,7 +57,7 @@ $giorno = "CREATE TABLE giorno("
     . ")";
 
 $comanda = "CREATE TABLE comanda ("
-    . "id_comanda INT PRIMARY KEY AUTO_INCREMENT,"
+    . "id_comanda INT,"
     . "nome_comanda VARCHAR(255),"
     . "id_giorno INT,"
     . "FOREIGN KEY (id_giorno) REFERENCES giorno(id_giorno),"
@@ -65,7 +65,8 @@ $comanda = "CREATE TABLE comanda ("
     . "ora_c TIME,"
     . "flag_b INT NOT NULL DEFAULT '0',"
     . "flag_pos INT NOT NULL DEFAULT '0',"
-    . "evasa INT NOT NULL DEFAULT '0'"
+    . "evasa INT NOT NULL DEFAULT '0',"
+    . "PRIMARY KEY( `id_comanda`, `id_giorno`)"
     . ")";
 
 $ordine = "CREATE TABLE ordine ("
@@ -88,7 +89,7 @@ $ordine_v = "CREATE TABLE ordine_v ("
     . ")";
 
 include "../connessione.php";
-try{
+try {
     $connessione->exec($cat_utente);
     $connessione->exec($utente);
     $connessione->exec($cat_prodotto);
@@ -100,7 +101,7 @@ try{
     $connessione->exec($ordine);
     $connessione->exec($ordine_v);
     echo "TABELLE CREATE";
-}catch (PDOException $e){
+} catch (PDOException $e) {
     echo "C' E' stato un errore<br>";
     echo $e->getMessage();
 }

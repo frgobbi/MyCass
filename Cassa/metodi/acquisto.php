@@ -6,14 +6,17 @@
  * Time: 23:08
  */
 session_start();
+$lettere = array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 $username = $_SESSION['user'];
 $num = filter_input(INPUT_POST, "num_P", FILTER_SANITIZE_STRING);
 $tipo = filter_input(INPUT_POST, "tipo", FILTER_SANITIZE_STRING);
+$nominativo = filter_input(INPUT_POST,"nominativo",FILTER_SANITIZE_STRING);
 $trovato= false;
 $code = "";
 $sql = "";
-$urlBar = "";
-$percorso ="img";
+$Ncomanda = "";
+$codeBar = "";
+$numO = 0;
 $esito = 0;
 $id_prodotti = array();
 $prezzi = array();
@@ -59,11 +62,11 @@ try {
     do {
         $trovato = false;
 
-        $a = rand(0, 9);
-        $b = rand(0, 9);
-        $c = rand(0, 9);
-        $d = rand(0, 9);
-        $code = $strGiorno.$strComanda.$a.$b.$c.$d;
+        $a = rand(0, 25);
+        $b = rand(0, 25);
+        $c = rand(0, 25);
+        $d = rand(0, 25);
+        $code = $strGiorno.$lettere[$a].$lettere[$b].$lettere[$c].$lettere[$d];
 
         foreach ($connessione->query("SELECT * FROM `comanda`") as $row){
             if(strcmp($code,$row['code_c'])==0){
@@ -71,7 +74,11 @@ try {
             }
         }
     } while ($trovato== true);
-    $nomeC = "Scontrino N. $numO";
+    if(strcmp($nominativo,"")!=0){
+        $Ncomanda = $nominativo;
+    } else{
+        $Ncomanda = "Scontrino N. $numO";
+    }
     //controllo se ci sono prodotti con ing
     $controlloing = 0;
     for($i=0;$i<$num;$i++){
@@ -81,28 +88,21 @@ try {
     }
     //NORMALE
     if($tipo == 0){
-        $sql = "INSERT INTO comanda (id_comanda, nome_comanda, id_giorno, code_C, ora_c, flag_b, flag_pos,evasa) VALUE ('$numO','$nomeC','$oggGiornata->id_giorno','$code',NOW(),0,0,'$controlloing')";
+        $sql = "INSERT INTO comanda (id_comanda, nome_comanda, id_giorno, code_C, ora_c, flag_b, flag_pos,evasa) VALUE ('$numO','$Ncomanda','$oggGiornata->id_giorno','$code',NOW(),0,0,'$controlloing')";
     } else {
         //BUONO SCONTO
         if($tipo == 1){
-            $sql = "INSERT INTO comanda (id_comanda, nome_comanda, id_giorno, code_C, ora_c, flag_b, flag_pos,evasa) VALUE ('$numO','$nomeC','$oggGiornata->id_giorno','$code',NOW(),1,0,'$controlloing')";
+            $sql = "INSERT INTO comanda (id_comanda, nome_comanda, id_giorno, code_C, ora_c, flag_b, flag_pos,evasa) VALUE ('$numO','$Ncomanda','$oggGiornata->id_giorno','$code',NOW(),1,0,'$controlloing')";
         } else {
             //POSS
-            $sql = "INSERT INTO comanda (id_comanda, nome_comanda, id_giorno, code_C, ora_c, flag_b, flag_pos,evasa) VALUE ('$numO','$nomeC','$oggGiornata->id_giorno','$code',NOW(),0,1,'$controlloing')";
+            $sql = "INSERT INTO comanda (id_comanda, nome_comanda, id_giorno, code_C, ora_c, flag_b, flag_pos,evasa) VALUE ('$numO','$Ncomanda','$oggGiornata->id_giorno','$code',NOW(),0,1,'$controlloing')";
         }
     }
     //CREAZIONE DELLA COMANDA
     $connessione->exec($sql);
     if($controlloing==1) {
         //CREAZIONE DEL BAR CODE
-        include "../../Librerie/BarCode/barcode.php";
-
-        $bar = new barcode(null, 4);
-        $nome = "B-$code";
-        $bar->build($code, $nome, $percorso);
-        $nomeE = $nome . ".gif";
-        $dominio = $_SERVER['SERVER_NAME'];
-        $urlBar = "$dominio/Cassa/metodi/img/$nomeE";
+        $codeBar = $code;
     }
     //INSERIMENTO PRODOTTI NELL'ORDINE
     for ($i = 0; $i < $num; $i++) {
@@ -127,7 +127,7 @@ try {
     echo $e->getMessage();
 }
 $connessione = null;
-$a_esito = array("esito"=>$esito,"ingredienti"=>$controlloing,"foto"=>$urlBar);
+$a_esito = array("esito"=>$esito,"ingredienti"=>$controlloing,"codComanda"=>$codeBar,"NomeC"=>$Ncomanda,"numO"=>$numO);
 echo json_encode($a_esito);
 
 function numCifre($numero){

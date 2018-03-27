@@ -23,7 +23,16 @@ if (!$_SESSION['login']) {
             font-family: KaushanScript;
             src: url(../Librerie/Font/KaushanScript-Regular.otf);
         }
+        /* Switch button */
+        .btn-default.btn-on.active{background-color: #5BB75B;color: white;}
+        .btn-default.btn-off.active{background-color: #DA4F49;color: white;}
 
+        .btn span.glyphicon {
+            opacity: 0;
+        }
+        .btn.active span.glyphicon {
+            opacity: 1;
+        }
     </style>
     <script type="text/javascript">
 
@@ -188,7 +197,7 @@ if (!$_SESSION['login']) {
                         <button type="button" onclick="annullaResto()" class="btn btn-danger btn-block">Resto 0</button>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <button type="button" onclick="totale_ord()" class="btn btn-primary btn-block">Resto</button>
+                        <button type="button" onclick="totale_ord(0)" class="btn btn-primary btn-block">Resto</button>
                     </div>
                 </div>
             </div>
@@ -216,5 +225,22 @@ if (!$_SESSION['login']) {
         </div>
     </div>
 </div>
+
+<!-- Modal infoCassa -->
+<div class="modal fade" id="info_cassa" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Info Cassa</h4>
+            </div>
+            <div id="bodyInfoC" class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

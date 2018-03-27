@@ -235,7 +235,12 @@ function BodyCassa()
                 <div class="col-xs-12">
                     <div class="box box-warning">
                         <div class="box-header" data-toggle="tooltip" title="Header tooltip">
-                            <h3 class="box-title" style="font-family: KaushanScript">Prodotti</h3>
+                            <form class="box-title form-inline">
+                                <div class="form-group">
+                                    <label for="nominativo">Nominativo </label>
+                                    <input id="nominativo" onkeyup="" type="text" class="form-control">
+                                </div>
+                            </form>
                             <div class="box-tools pull-right">
                                 <button class="btn btn-warning btn-xs" data-widget="collapse"><i
                                             class="fa fa-minus"></i></button>
@@ -279,7 +284,7 @@ function BodyCassa()
 
             <div class="row" style="font-family: KaushanScript">
                 <div class="col-xs-3">
-                    <button class="btn btn-primary btn-lg btn-block">Prova</button>
+                    <button class="btn btn-primary btn-lg btn-block" onclick="creaInfo()">Info</button>
                 </div>
                 <div class="col-xs-3">
                     <button class="btn btn-primary btn-lg btn-block" onclick="annulla()">Cancella Ordine</button>
@@ -296,7 +301,7 @@ function BodyCassa()
             <div class="row">
                 <div class="box box-primary">
                     <div class="box-header" data-toggle="tooltip" title="Header tooltip"></div>
-                    <div class="box-body" id="scontrino" style="height: 590px; overflow-y: auto; overflow-x:hidden">
+                    <div class="box-body" id="scontrino" style="height: 604px; overflow-y: auto; overflow-x:hidden">
                         <div class="row container-fluid" id="area_ordine"
                              style="height: 470px; overflow-y: auto; overflow-x:hidden">
                             <!--da javascript-->
@@ -330,7 +335,8 @@ function BodyCassa()
                 <div class="btn-group btn-group-justified">
                     <a href="#" class="btn btn-primary btn-lg" onclick="subtotale()">Sub</a>
                     <a href="#" class="btn btn-primary btn-lg" onclick="totale_ord('0')">Totale</a>
-                    <a href="#" class="btn btn-primary btn-lg">POS</a>
+                    <a href="#" class="btn btn-primary btn-lg" onclick="totale_ord('2')">POS</a>
+                    <a href="#" class="btn btn-primary btn-lg" onclick="totale_ord('1')">Buono</a>
                 </div>
             </div>
         </div>

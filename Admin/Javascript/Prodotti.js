@@ -169,20 +169,24 @@ function bodyModProd(id_prod) {
                     }
                 }
                 if(trovato == 1){
-                    cod +="<div class='col-sm-4'>" +
-                        "<div class='form-check' style='display: inline'>" +
-                        "<label class='form-check-label'>" +
-                        "<input checked type='checkbox' name='ingredienti[]' class='form-check-input' value='"+ogg.arrayI[i][0]+"'> "+ogg.arrayI[i][1]+
+                    cod +="<div class='col-sm-4' style='padding-bottom: 10px;'>" +
+                        "<div class=\"btn-group\" data-toggle=\"buttons\">" +
+                        "<label class=\"btn btn-primary active\">" +
+                        "<input type=\"checkbox\" checked name='ingredienti[]' value='" + ogg.arrayI[i][0] + "' autocomplete=\"off\">" +
+                        "<span class=\"glyphicon glyphicon-ok\"></span>" +
                         "</label>" +
                         "</div>" +
+                        "<label>&nbsp;"+ ogg.arrayI[i][1]+"</label>"+
                         "</div>";
                 } else {
-                    cod +="<div class='col-sm-4'>" +
-                        "<div class='form-check' style='display: inline'>" +
-                        "<label class='form-check-label'>" +
-                        "<input type='checkbox' name='ingredienti[]' class='form-check-input' value='"+ogg.arrayI[i][0]+"'> "+ogg.arrayI[i][1]+
+                    cod +="<div class='col-sm-4' style='padding-bottom: 10px;'>" +
+                        "<div class=\"btn-group\" data-toggle=\"buttons\">" +
+                        "<label class=\"btn btn-primary\">" +
+                        "<input type=\"checkbox\" name='ingredienti[]' value='" + ogg.arrayI[i][0] + "' autocomplete=\"off\">" +
+                        "<span class=\"glyphicon glyphicon-ok\"></span>" +
                         "</label>" +
                         "</div>" +
+                        "<label>&nbsp;"+ ogg.arrayI[i][1]+"</label>"+
                         "</div>";
                 }
 
