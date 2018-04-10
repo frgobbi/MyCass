@@ -132,22 +132,39 @@ function BodyAdmin()
                                     <tbody id="bodyTG">
                                     <?php
                                     include "../connessione.php";
-                                    foreach ($connessione->query("SELECT DATE_FORMAT(data_g, '%d-%m-%Y') AS data_giorno, incasso, chiuso FROM giorno") as $row) {
+                                    try{
+                                    foreach ($connessione->query("SELECT id_giorno, DATE_FORMAT(data_g, '%d-%m-%Y') AS data_giorno, incasso, chiuso FROM giorno") as $row) {
+                                        $id_g = $row['id_giorno'];
                                         $incasso = $row['incasso'];
                                         $data = $row['data_giorno'];
                                         $flag = $row['chiuso'];
+                                        $Totale = 0;
                                         echo "<tr>";
                                         echo "<td>$data</td>";
-                                        echo "<td>$incasso &euro;</td>";
+
                                         if ($flag == 0) {
-                                            echo "<td><button class='btn btn-danger btn-block'><i class=\"fas fa-window-close\"></i></button></td>";
+                                            $oggI_Prod = $connessione->query("SELECT SUM(prezzo) as Totale FROM `ordine` INNER JOIN comanda ON ordine.id_comanda = comanda.id_comanda INNER JOIN prodotto ON ordine.id_prodotto = prodotto.id_prodotto WHERE comanda.id_giorno = '$id_g' AND comanda.flag_b='0' AND comanda.flag_pos='0'")->fetch(PDO::FETCH_OBJ);
+                                            $oggI_varie = $connessione->query("SELECT SUM(importo) as Totale FROM `ordine_v` INNER JOIN comanda ON ordine_v.id_comanda = comanda.id_comanda WHERE comanda.id_giorno = '$id_g' AND comanda.flag_b=0 AND comanda.flag_pos=0")->fetch(PDO::FETCH_OBJ);
+
+
+                                            $oggI_POS_Prod = $connessione->query("SELECT SUM(prezzo) as Totale FROM `ordine` INNER JOIN comanda ON ordine.id_comanda = comanda.id_comanda INNER JOIN prodotto ON ordine.id_prodotto = prodotto.id_prodotto WHERE comanda.id_giorno = '$id_g' AND comanda.flag_b='0' AND comanda.flag_pos='1'")->fetch(PDO::FETCH_OBJ);
+                                            $oggI_POS_varie = $connessione->query("SELECT SUM(importo) as Totale FROM `ordine_v` INNER JOIN comanda ON ordine_v.id_comanda = comanda.id_comanda WHERE comanda.id_giorno = '$id_g' AND comanda.flag_b=0 AND comanda.flag_pos=1")->fetch(PDO::FETCH_OBJ);
+
+                                            $Totale = doubleval($oggI_Prod->Totale) + doubleval($oggI_varie->Totale) + doubleval($oggI_POS_Prod->Totale) + doubleval($oggI_POS_varie->Totale);
+                                            echo "<td>$Totale &euro;</td>";
+                                        } else {
+                                            echo "<td>$incasso &euro;</td>";
+                                        }
+                                        if ($flag == 0) {
+                                            echo "<td><button id='btn_$id_g' class='btn btn-danger btn-block' onclick='chiudi_giorno()'><i class=\"fas fa-window-close\"></i></button></td>";
                                         } else {
                                             echo "<td><button disabled class='btn btn-danger btn-block disabled'><i class=\"fas fa-window-close\"></i></button></td>";
                                         }
 
                                         echo "</tr>";
+                                        }
+                                    }catch (PDOException $e){}
                                         $connessione = null;
-                                    }
                                     ?>
                                     </tbody>
                                 </table>
@@ -308,22 +325,27 @@ function BodyCassa()
                         </div>
                         <div class="row" id="area_sub_tot" style="display: none;">
                             <hr>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left" style="font-family: KaushanScript"><h4><b>Contante:</b></h4>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left"
+                                 style="font-family: KaushanScript"><h4><b>Contante:</b></h4>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" id="contante"><h4>
                                     <b>15.25 &euro;</b></h4></div>
                         </div>
                         <div class="row" id="area_tot">
                             <hr>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left" style="font-family: KaushanScript"><h3><b>Tot:</b></h3></div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" id="tot" style="font-family: KaushanScript"><h3><b> 0 &euro;</b></h3>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left"
+                                 style="font-family: KaushanScript"><h3><b>Tot:</b></h3></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" id="tot"
+                                 style="font-family: KaushanScript"><h3><b> 0 &euro;</b></h3>
                             </div>
 
                         </div>
                         <div class="row" id="area_resto" style="display: none;">
                             <hr>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left" style="font-family: KaushanScript"><h4><b>Resto:</b></h4></div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" id="resto" style="font-family: KaushanScript"><h4>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-left"
+                                 style="font-family: KaushanScript"><h4><b>Resto:</b></h4></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" id="resto"
+                                 style="font-family: KaushanScript"><h4>
                                     <b>15.25 &euro;</b></h4>
                             </div>
                         </div>
@@ -343,3 +365,77 @@ function BodyCassa()
     </div>
     <?php
 }
+
+function BodyCucina()
+{
+    ?>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12">
+            <div class="box box-primary">
+                <div class="box-header" data-toggle="tooltip" title="Header tooltip">
+                    <h3 class="box-title">Ordini</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-primary btn-xs" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                        <button class="btn btn-primary btn-xs" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                    </div>
+                    <div style="padding-top: 5px;">
+                        <div class="progress">
+                            <div id="barra" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                 style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-top: 0px; border-top: 0px;" class="box-body">
+                    <div class="row container-fluid">
+                        <div id="ordini" class="col-sm-12 table-responsive"
+                             style="padding: 0;height:450px;overflow-y:auto;">
+                            <script>
+                                aggiornaOrdini();
+                            </script>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <hr>
+                            <div class="form-group">
+                                <!--<label for="usr">Name:</label>-->
+                                <input type="text" class="form-control" onkeyup="tastoEnter()" id="code" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" onclick="evadi()">Evadi</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12">
+            <div class="box box-warning">
+                <div class="box-header" data-toggle="tooltip" title="Header tooltip">
+                    <h3 class="box-title">Prodotti</h3>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-warning btn-xs" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                        <button class="btn btn-warning btn-xs" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class='row'>
+                        <div id="prodotti" style="height: 624px; overflow-y: auto" class='col-lg-12 table-responsive'>
+
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+
+            </div><!-- /.box -->
+        </div>
+    </div>
+    <?php
+}
+

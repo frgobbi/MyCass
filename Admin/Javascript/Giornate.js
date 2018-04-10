@@ -39,5 +39,24 @@ function addGiornata() {
     });
 }
 function chiudi_giorno() {
-
+    $.ajax({
+        type: "POST",
+        url: "./metodi/chiudi_giorno.php",
+        dataType: "html",
+        success: function(msg)
+        {
+            var ogg = $.parseJSON(msg);
+            if (ogg.esito == 0){
+                var key = "#btn_"+ogg.id_G;
+                $(key).addClass("disabled");
+                $(key).attr("disabled",true);
+            } else {
+                alert("Qualcosa è andato storto...riprovare più tardi");
+            }
+        },
+        error: function()
+        {
+            alert("Chiamata fallita, si prega di riprovare...");
+        }
+    });
 }

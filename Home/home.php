@@ -15,6 +15,10 @@ if ($_SESSION['cat'] == 1) {
 } else {
     if($_SESSION['cat']==2){
         echo "<script type='text/javascript'>window.location.href='../Cassa/cassa.php'</script>";
+    } else {
+        if($_SESSION['cat']==3){
+            echo "<script type='text/javascript'>window.location.href='../Cucina/cucina.php'</script>";
+        }
     }
 }
 ?>

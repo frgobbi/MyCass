@@ -51,6 +51,29 @@ if (!$_SESSION['login']) {
         <section class="content">
             <!-- Small boxes (Stat box) -->
             <?php
+
+            include "../connessione.php";
+            try{
+                $ogg_giorno = $connessione->query("SELECT id_giorno, DATE_FORMAT(data_g, '%d-%m-%Y') AS data_giorno, incasso, chiuso FROM giorno WHERE chiuso = 0")->fetch(PDO::FETCH_OBJ);
+                if($ogg_giorno != NULL){
+                    echo "<script>"
+                        ."var domanda = confirm(\"Oggi è il $ogg_giorno->data_giorno ??\");"
+                        ."if (domanda != true) {"
+                        ."alert(\"Chiudere Giornata e Aprire quella di oggi! Contattal'amministratore\");"
+                        ."window.location.href=\"../Metodi_Index/logout.php\";"
+                        ."}"
+                        ."</script>";
+                } else {
+                    echo "<script>"
+                        ."alert(\"Fai aprire una giornata all'amministratore!!!\");"
+                        ."window.location.href=\"../Metodi_Index/logout.php\";"
+                        ."</script>";
+                }
+            }catch (PDOException $e){
+                echo $e->getMessage();
+            }
+            $connessione = null;
+
             include "../Componenti_base/BHome.php";
             BodyCassa();
             ?>

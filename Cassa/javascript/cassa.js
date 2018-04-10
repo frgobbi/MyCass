@@ -361,8 +361,10 @@ function totale_ord(tipo) {
                             }
                         }
                     }
-                    if (ogg.ingredienti == 1) {
+                    alert(ogg.ingredienti);
+                    if (ogg.ingredienti==1) {
                         str += ogg.codComanda + ";" + ogg.NomeC + ";" + ogg.numO;
+                        alert(str);
                         console.log(str);
                     }
                     if (flagStampante == true) {
@@ -719,7 +721,7 @@ function creaInfo() {
     var codice = "";
     $.ajax({
         type: "GET",
-        url: "metodi/Dati_Info_giorno.php",
+        url: "Dati/Dati_Info_giorno.php",
         success: function (risposta) {
             var ogg = $.parseJSON(risposta);
             console.log(ogg);
@@ -788,7 +790,7 @@ function creaInfo() {
             var IncassoT = parseFloat(ogg.totN) + parseFloat(ogg.totPOS);
             IncassoT = arrotonda(IncassoT, 2);
             codice += "</div><!-- /.box-body -->" +
-                "<div class='box-footer'><button class='btn btn-primary btn-block'>Apri Cassetto</button></div>" +
+                "<div class='box-footer'><button onclick='stampa(\"5\")' class='btn btn-primary btn-block'>Apri Cassetto</button></div>" +
                 "</div>" +
                 "<div class=\"box box-primary\">" +
                 "<div class=\"box-header\" data-toggle=\"tooltip\" title=\"Header tooltip\">" +
