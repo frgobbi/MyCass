@@ -364,8 +364,6 @@ function totale_ord(tipo) {
                     alert(ogg.ingredienti);
                     if (ogg.ingredienti==1) {
                         str += ogg.codComanda + ";" + ogg.NomeC + ";" + ogg.numO;
-                        alert(str);
-                        console.log(str);
                     }
                     if (flagStampante == true) {
                         stampa(str);
