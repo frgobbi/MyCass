@@ -33,6 +33,10 @@ if (!$_SESSION['login']) {
                 evadi();
             }
         }
+
+        $('body').click(function() {
+            $('#code').focus();
+        });
     </script>
 </head>
 <body class="skin-blue wysihtml5-supported sidebar-collapse">

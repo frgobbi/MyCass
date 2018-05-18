@@ -22,63 +22,65 @@ function aggiornaOrdini(){
         success: function(msg)
         {
             var ogg = $.parseJSON(msg);
-            codiceO += "<table class=\"table table-hover table-bordered\">" +
-                "<thead>" +
-                "<tr>" +
-                "<th>Sel</th>" +
-                "<th>Codice</th>" +
-                "<th>Ora conferma</th>" +
-                "</tr>" +
-                "</thead>" +
-                "<tbody>";
-                for(var i =0;i<ogg.ordini.length;i++){
-                    if (ogg.ordini[i].colore =="R") {
-                        codiceO += "<tr id='TR_"+ogg.ordini[i].codice+"' style='background-color:red'>";
+            if(ogg.trovato == 1) {
+                codiceO += "<table class=\"table table-hover table-bordered\">" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<th>Sel</th>" +
+                    "<th>Codice</th>" +
+                    "<th>Ora conferma</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+                for (var i = 0; i < ogg.ordini.length; i++) {
+                    if (ogg.ordini[i].colore == "R") {
+                        codiceO += "<tr id='TR_" + ogg.ordini[i].codice + "' style='background-color:red'>";
                     } else {
-                        if (ogg.ordini[i].colore =="G") {
-                            codiceO +=  "<tr id='TR_"+ogg.ordini[i].codice+"' style='background-color:yellow'>";
+                        if (ogg.ordini[i].colore == "G") {
+                            codiceO += "<tr id='TR_" + ogg.ordini[i].codice + "' style='background-color:yellow'>";
                         } else {
-                            codiceO += "<tr id='TR_"+ogg.ordini[i].codice+"'>";
+                            codiceO += "<tr id='TR_" + ogg.ordini[i].codice + "'>";
                         }
                     }
                     codiceO += "<td>";
                     codiceO += "<div class=\"btn-group\" data-toggle=\"buttons\">" +
-                    "<label class=\"btn btn-primary\">" +
-                    "<input type=\"checkbox\" name='ordini' value='"+ogg.ordini[i].codice+"' autocomplete=\"off\">" +
-                    "<span class=\"glyphicon glyphicon-ok\"></span>" +
-                    "</label>" +
-                    "</div>";
+                        "<label class=\"btn btn-primary\">" +
+                        "<input type=\"checkbox\" name='ordini' value='" + ogg.ordini[i].codice + "' autocomplete=\"off\">" +
+                        "<span class=\"glyphicon glyphicon-ok\"></span>" +
+                        "</label>" +
+                        "</div>";
                     codiceO += "</td>";
-                    codiceO += "<td>"+ogg.ordini[i].codice+"</td>";
-                    codiceO += "<td>"+ogg.ordini[i].ora+"</td>";
+                    codiceO += "<td>" + ogg.ordini[i].codice + "</td>";
+                    codiceO += "<td>" + ogg.ordini[i].ora + "</td>";
                     codiceO += "</tr>";
                 }
-            codiceO += "</tbody></table>";
+                codiceO += "</tbody></table>";
 
 
-            codiceP += "<table class=\"table table-striped table-bordered\">" +
-                "<thead>" +
-                "<tr>" +
-                "<th></th>" +
-                "<th>Nome Prodotto</th>" +
-                "<th>Quantit&agrave;</th>" +
-                "</tr>" +
-                "</thead>" +
-                "<tbody>" +
-                "<tr>";
-                for (var i=0; i<ogg.prodotti.length;i++){
-                codiceP += "<td></td>";
-                codiceP += "<td>"+ogg.prodotti[i].prodotto+"</td>";
-                codiceP += "<td>"+ogg.prodotti[i].numero+"</td>";
-                codiceP += "</tr>";
-            }
-            codiceP += "</tbody></table>";
+                codiceP += "<table class=\"table table-striped table-bordered\">" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<th></th>" +
+                    "<th>Nome Prodotto</th>" +
+                    "<th>Quantit&agrave;</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>" +
+                    "<tr>";
+                for (var i = 0; i < ogg.prodotti.length; i++) {
+                    codiceP += "<td></td>";
+                    codiceP += "<td>" + ogg.prodotti[i].prodotto + "</td>";
+                    codiceP += "<td>" + ogg.prodotti[i].numero + "</td>";
+                    codiceP += "</tr>";
+                }
+                codiceP += "</tbody></table>";
 
 
                 $('#ordini').empty();
                 $('#prodotti').empty();
                 $('#ordini').append(codiceO);
                 $('#prodotti').append(codiceP);
+            }
         },
         error: function()
         {
